@@ -157,6 +157,34 @@ footer{margin-top:60px;padding:30px 0 120px;color:#7da0bb;font-size:.9rem}.pines
 .rank-opt .dur{color:var(--rc);font-weight:800}.rank-opt .pr{color:#7dffb0;font-weight:800}
 .rank-opt .buy-btn,.rank-opt .cart-add-btn{padding:6px 12px;font-size:.85rem}
 .rank-opt .btn-container{gap:6px}
+
+/* ===== GLOW-UP ===== */
+.section-title{font-size:2.6rem;font-weight:900;letter-spacing:4px;background:linear-gradient(90deg,#fff,#7fd8ff,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(56,182,255,.6))}
+.items-grid{grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:26px;max-width:1200px}
+.item-card{border-radius:20px;padding:34px 20px 26px}
+.item-card.r{background:linear-gradient(170deg,color-mix(in srgb,var(--rc) 20%,#0b1d36),#07121f 62%)}
+.item-card.r::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,transparent,var(--rc),transparent)}
+.item-card.r::after{content:"";position:absolute;top:0;left:-130%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);transition:left .8s}
+.item-card.r:hover::after{left:160%}
+.item-card:hover{transform:translateY(-10px) scale(1.02)}
+.item-card .chest{font-size:4.2rem;width:108px;height:108px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--rc) 30%,transparent),transparent 70%)}
+.item-card .chest.px,.item-card .chest svg{border-radius:0}
+.item-name{font-size:1.6rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
+.rar-tag{font-weight:800;padding:3px 16px;background:color-mix(in srgb,var(--rc) 14%,transparent)}
+.item-price{font-size:1.5rem;background:rgba(125,255,176,.1);border:1px solid rgba(125,255,176,.4);padding:5px 22px;border-radius:30px;text-shadow:0 0 12px rgba(125,255,176,.5)}
+.buy-btn{background:linear-gradient(135deg,#1e90ff,#38d4ff);box-shadow:0 4px 16px rgba(56,182,255,.4);letter-spacing:.5px}
+.cart-add-btn{background:rgba(18,50,79,.8)}
+.sparkline{animation:sparkPulse 2.4s ease-in-out infinite}
+@keyframes sparkPulse{50%{opacity:.55;letter-spacing:10px}}
+.perks li{padding:3px 8px;text-align:left;border-radius:8px;border-bottom:none;margin-bottom:4px;background:rgba(255,255,255,.045)}
+.perks li:hover{background:color-mix(in srgb,var(--rc) 22%,transparent)}
+.rank-opt{border-radius:12px;padding:10px 12px;background:linear-gradient(90deg,#07121f,color-mix(in srgb,var(--rc) 14%,#07121f));flex-wrap:wrap;justify-content:center}
+.rank-opt .dur{font-size:1.05rem;min-width:46px}.rank-opt .pr{font-size:1.2rem;text-shadow:0 0 10px rgba(125,255,176,.5)}
+.rank-opt .mini{font-size:.62rem;font-weight:800;letter-spacing:1px;background:var(--rc);color:#06121f;padding:2px 8px;border-radius:10px}
+.sec-sub{font-size:1.05rem}
+.hero-sub{text-shadow:0 0 14px rgba(127,216,255,.5)}
+.cta-btn.primary,.cart-icon-btn{box-shadow:0 0 24px var(--glow)}
+.rar-amethyst{--rc:#b36bff}.rar-prime{--rc:#4dd0ff}.rar-crimson{--rc:#e0243f}.rar-rank{--rc:#ff9a3c}
 </style>
 </head>
 <body>
@@ -324,13 +352,15 @@ const ranks=[
 ];
 function rankCard(r){
  const [n,icon,cls,spark,perks,p30,p14]=r;
- const opt=(d,p)=>`<div class="rank-opt"><span class="dur">(${d})</span><span class="pr">${p.toFixed(2)} euro</span><div class="btn-container"><button class="buy-btn" onclick="openCheckout('${n} (${d})',${p})">Cumpără</button><button class="cart-add-btn" onclick="addToCart('${n} (${d})',${p})">+ Coș</button></div></div>`;
- return `<div class="item-card glass r ${cls}"><div class="halo"></div><div class="chest">${icon}</div><div class="rar-tag">RANK</div><div class="item-name">${n}</div>
+ const opt=(d,p)=>`<div class="rank-opt"><span class="dur">(${d})</span>${d==="30D"?`<span class="mini">BEST VALUE</span>`:""}<span class="pr">${p.toFixed(2)} euro</span><div class="btn-container"><button class="buy-btn" onclick="openCheckout('${n} (${d})',${p})">Cumpără</button><button class="cart-add-btn" onclick="addToCart('${n} (${d})',${p})">+ Coș</button></div></div>`;
+ const RB={"Rank Santa":"POPULAR","Rank Christmas":"BEST"};
+ return `<div class="item-card glass r ${cls}">${RB[n]?`<div class="ribbon">${RB[n]}</div>`:""}<div class="halo"></div><div class="chest">${icon}</div><div class="rar-tag">RANK</div><div class="item-name">${n}</div>
  <div class="sparkline">${spark}</div><ul class="perks">${perks.map(x=>`<li>${x}</li>`).join("")}</ul>${opt("30D",p30)}${opt("14D",p14)}</div>`;
 }
-const keys=[["Amethyst Key","🔮 Premii rare din crate-ul Amethyst.",1.99,"🔮","epic","POPULAR"],["Prime Key","⭐ Recompense premium din crate-ul Prime.",1.25,"⭐","rare",""],["Christmas Key","🎄 Surprize de sezon din crate-ul Christmas.",0.99,"🎄","rare",""],["Winter Key","❄️ Prada de iarnă din crate-ul Winter.",0.99,"❄️","rare",""],["Crimson Key","🩸 Premii intense din crate-ul Crimson.",0.99,"🩸","rare",""],["Gold Key","🪙 Premii de aur din crate-ul Gold.",0.49,"🪙","common",""],["Rank Key","🛡️ Poți câștiga un rank din crate-ul Rank.",0.99,"🛡️","epic",""]];
+function keySVG(c,l,d,badge){return `<svg class="pxchest" viewBox="0 0 16 16" width="84" height="84" shape-rendering="crispEdges"><rect width="16" height="16" fill="#0b1424"/><rect width="16" height="1" fill="${d}"/><rect y="15" width="16" height="1" fill="${d}"/><rect width="1" height="16" fill="${d}"/><rect x="15" width="1" height="16" fill="${d}"/><rect x="4" y="2" width="8" height="6" fill="${d}"/><rect x="5" y="1" width="6" height="8" fill="${c}"/><rect x="4" y="2" width="8" height="6" fill="${c}"/><rect x="6" y="3" width="4" height="4" fill="#0b1424"/><rect x="5" y="2" width="2" height="1" fill="${l}"/><rect x="4" y="3" width="1" height="2" fill="${l}"/><rect x="7" y="8" width="2" height="7" fill="${c}"/><rect x="7" y="8" width="1" height="6" fill="${l}"/><rect x="9" y="10" width="3" height="2" fill="${c}"/><rect x="9" y="13" width="2" height="2" fill="${c}"/><rect x="9" y="14" width="2" height="1" fill="${d}"/><rect x="8" y="8" width="1" height="7" fill="${d}" opacity=".5"/></svg>${badge?`<span class="pxbadge">${badge}</span>`:""}`}
+const keys=[["Amethyst Key","Premii rare și puternice din crate-ul Amethyst.",1.99,keySVG("#b36bff","#e2c4ff","#6b2fb3",""),"kamethyst","POPULAR"],["Prime Key","Recompense premium din crate-ul Prime.",1.25,keySVG("#4dd0ff","#c4f0ff","#1a7aa6",""),"kprime",""],["Christmas Key","Surprize de sezon din crate-ul Christmas.",0.99,keySVG("#3ddc6b","#b8ffcc","#d62f3f","🎄"),"kxmas",""],["Winter Key","Prada de iarnă din crate-ul Winter.",0.99,keySVG("#bdeaff","#ffffff","#4d8dff","❄️"),"kwinter",""],["Crimson Key","Premii intense din crate-ul Crimson.",0.99,keySVG("#e0243f","#ff8a9a","#7a0f20","🩸"),"kcrimson",""],["Gold Key","Premii de aur din crate-ul Gold.",0.49,keySVG("#ffd76a","#fff2b8","#b8861a",""),"kgold",""],["Rank Key","Poți câștiga un rank din crate-ul Rank.",0.99,keySVG("#ff9a3c","#ffd2a0","#a8560f",""),"krank",""]];
 
-const RAR={common:["COMMON","rar-common"],rare:["RARE","rar-rare"],epic:["EPIC","rar-epic"],legend:["LEGENDARY","rar-legend"]};
+const RAR={kamethyst:["KEY","rar-amethyst"],kprime:["KEY","rar-prime"],kxmas:["KEY","rar-xmas"],kwinter:["KEY","rar-winter"],kcrimson:["KEY","rar-crimson"],kgold:["KEY","rar-legend"],krank:["KEY","rar-rank"],common:["COMMON","rar-common"],rare:["RARE","rar-rare"],epic:["EPIC","rar-epic"],legend:["LEGENDARY","rar-legend"]};
 function card(n,desc,drops,price,icon,rar,ribbon){
  const r=RAR[rar];
  return `<div class="item-card glass r ${r[1]}">${ribbon?`<div class="ribbon">${ribbon}</div>`:""}<div class="halo"></div>
