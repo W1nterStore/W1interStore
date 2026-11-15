@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -148,6 +147,16 @@ footer{margin-top:60px;padding:30px 0 120px;color:#7da0bb;font-size:.9rem}.pines
 .pxchest{display:block;image-rendering:pixelated;filter:drop-shadow(0 0 12px var(--rc,var(--accent)))}
 .pxbadge{position:absolute;right:-16px;bottom:-8px;font-size:2rem;background:#07121f;border:2px solid var(--rc);border-radius:8px;padding:0 5px;line-height:1.4}
 .chest.px{width:84px;height:74px;margin:0 auto 14px}
+
+/* ===== RANKS ===== */
+.rar-ice{--rc:#5fd0ff}.rar-winter{--rc:#8ab4ff}.rar-santa{--rc:#ff5b6e}.rar-xmas{--rc:#46e07a}
+.sparkline{letter-spacing:6px;margin:-4px 0 12px;font-size:1.1rem}
+.perks{list-style:none;padding:0;margin:0 0 16px;line-height:2;color:#e4f4ff;font-weight:600;width:100%}
+.perks li{border-bottom:1px solid rgba(127,216,255,.15)}.perks li:last-child{border-bottom:none}
+.rank-opt{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;background:#07121f;border:1px solid var(--rc);border-radius:10px;padding:8px 10px;margin-bottom:8px}
+.rank-opt .dur{color:var(--rc);font-weight:800}.rank-opt .pr{color:#7dffb0;font-weight:800}
+.rank-opt .buy-btn,.rank-opt .cart-add-btn{padding:6px 12px;font-size:.85rem}
+.rank-opt .btn-container{gap:6px}
 </style>
 </head>
 <body>
@@ -188,7 +197,7 @@ footer{margin-top:60px;padding:30px 0 120px;color:#7da0bb;font-size:.9rem}.pines
     </div></div>
   <div class="info-box glass"><h2>Bun venit pe WinterSMP ❄️</h2>
     <p><b>WinterSMP</b> este un server de <b>supraviețuire</b> unde iarna nu iartă pe nimeni. Strângi resurse, îți construiești baza, îți faci o echipă și lupți să devii cel mai puternic jucător.</p>
-    <p>Prin achizițiile din magazin ne ajuți să menținem serverul rapid și stabil, iar tu primești <b>shards, spawnere, unban-uri și tag-uri</b>. Mulțumim că faci parte din familia WinterSMP! 💙</p></div>
+    <p>Prin achizițiile din magazin ne ajuți să menținem serverul rapid și stabil, iar tu primești <b>ranks, keys, shards, spawnere, unban-uri și tag-uri</b>. Mulțumim că faci parte din familia WinterSMP! 💙</p></div>
   <div class="features">
     <div class="feature glass"><div class="ic">⚔️</div><b>Survival Autentic</b><span>Progres real, fără scurtături.</span></div>
     <div class="feature glass"><div class="ic">🏰</div><b>Comunitate Activă</b><span>Echipe, clanuri și bătălii.</span></div>
@@ -197,7 +206,7 @@ footer{margin-top:60px;padding:30px 0 120px;color:#7da0bb;font-size:.9rem}.pines
   </div>
   <div class="cat-title">🧭 Cum cumperi</div>
   <div class="step-grid">
-    <div class="step glass"><div class="num">1</div><b>Alege produsul</b><span>Din shards, spawnere, unban sau tag-uri.</span></div>
+    <div class="step glass"><div class="num">1</div><b>Alege produsul</b><span>Din ranks, keys, shards, spawnere, unban sau tag-uri.</span></div>
     <div class="step glass"><div class="num">2</div><b>Scrie numele tău</b><span>Exact cum e în Minecraft.</span></div>
     <div class="step glass"><div class="num">3</div><b>Plătești</b><span>Rapid, cu paysafecard.</span></div>
     <div class="step glass"><div class="num">4</div><b>Primești produsul</b><span>În câteva minute, în joc.</span></div>
@@ -214,8 +223,8 @@ footer{margin-top:60px;padding:30px 0 120px;color:#7da0bb;font-size:.9rem}.pines
   </div>
 </div>
 
-<div id="ranksSection" class="page-section"><div class="section-title">🛡️ Ranks</div><div class="items-grid"><div class="empty-note">În curând ❄️</div></div></div>
-<div id="keysSection" class="page-section"><div class="section-title">🔑 Keys</div><div class="items-grid"><div class="empty-note">În curând ❄️</div></div></div>
+<div id="ranksSection" class="page-section"><div class="section-title">🛡️ Ranks</div><div class="sec-sub">Alege rank-ul tău preferat 👑</div><div class="items-grid" id="ranksGrid"></div></div>
+<div id="keysSection" class="page-section"><div class="section-title">🔑 Keys</div><div class="sec-sub">Deschide crate-uri și câștigă premii 🎁</div><div class="items-grid" id="keysGrid"></div></div>
 <div id="shardsSection" class="page-section"><div class="section-title">💠 Pachete de Shards</div><div class="items-grid" id="shardsGrid"></div></div>
 <div id="spawnersSection" class="page-section"><div class="section-title">📦 Spawner</div><div class="sec-sub">Alege spawner-ul care îți trebuie ⛏️</div><div class="items-grid" id="spawnGrid"></div></div>
 <div id="tagsSection" class="page-section"><div class="section-title">🏷️ Tag-uri Exclusive</div>
@@ -273,10 +282,17 @@ const SERVER_IP="wintersmp.xyz";
 const DISCORD_URL="https://discord.gg/RC7Ua9Z7TS";
 function openDiscord(){if(DISCORD_URL.includes("LINK-TAU")){toast("Link-ul de Discord nu e setat încă.");return}window.open(DISCORD_URL,"_blank")}
 const PAYMENT_LINKS={
+ "Rank Ice (30D)":"https://numele-tau.tebex.io/package/r1","Rank Ice (14D)":"https://numele-tau.tebex.io/package/r2",
+ "Rank Winter (30D)":"https://numele-tau.tebex.io/package/r3","Rank Winter (14D)":"https://numele-tau.tebex.io/package/r4",
+ "Rank Santa (30D)":"https://numele-tau.tebex.io/package/r5","Rank Santa (14D)":"https://numele-tau.tebex.io/package/r6",
+ "Rank Christmas (30D)":"https://numele-tau.tebex.io/package/r7","Rank Christmas (14D)":"https://numele-tau.tebex.io/package/r8",
+ "Amethyst Key":"https://numele-tau.tebex.io/package/k1","Prime Key":"https://numele-tau.tebex.io/package/k2",
+ "Christmas Key":"https://numele-tau.tebex.io/package/k3","Winter Key":"https://numele-tau.tebex.io/package/k4",
+ "Crimson Key":"https://numele-tau.tebex.io/package/k5","Gold Key":"https://numele-tau.tebex.io/package/k6","Rank Key":"https://numele-tau.tebex.io/package/k7",
  "100 Shards":"https://numele-tau.tebex.io/package/111111","500 Shards":"https://numele-tau.tebex.io/package/222222",
  "750 Shards":"https://numele-tau.tebex.io/package/333333","1500 Shards":"https://numele-tau.tebex.io/package/444444",
  "3000 Shards":"https://numele-tau.tebex.io/package/555555","5000 Shards":"https://numele-tau.tebex.io/package/666666",
- "10000 Shards":"https://numele-tau.tebex.io/package/777777","Spawner Gold":"https://numele-tau.tebex.io/package/888888",
+ "10000 Shards":"https://numele-tau.tebex.io/package/777777",
  "Tag Personalizat":"https://numele-tau.tebex.io/package/999999",
  "Spawner Zombie":"https://numele-tau.tebex.io/package/s1",
  "Spawner Skeleton":"https://numele-tau.tebex.io/package/s2","Spawner Iron Golem":"https://numele-tau.tebex.io/package/s3",
@@ -286,9 +302,9 @@ const PAYMENT_LINKS={
 const recentPurchases=[];   // {player,item,time}
 const topBuyers=[];         // {player,total}
 
-const shards=[["100 Shards","Fonduri rapide pentru magazinul din joc.",0.29,"💠","","common"],["500 Shards","Pachet avantajos pentru upgrade-uri.",1.99,"💠","","common"],["750 Shards","Resurse extinse pentru dominație.",2.49,"💎","","rare"],["1500 Shards","Pachetul clasic pentru upgrade-uri mari.",4.99,"💎","","rare"],["3000 Shards","Rezerve masive pentru avansați.",9.99,"🔷","POPULAR","epic"],["5000 Shards","Pachetul suprem pentru supremație.",14.99,"🔷","","epic"],["10000 Shards","Pachetul maxim pentru cei dedicați.",22.49,"👑","BEST VALUE","legend"]];
+const shards=[["100 Shards","Fonduri rapide pentru magazinul din joc.",0.10,"💠","","common"],["500 Shards","Pachet avantajos pentru upgrade-uri.",0.49,"💠","","common"],["750 Shards","Resurse extinse pentru dominație.",0.80,"💎","","rare"],["1500 Shards","Pachetul clasic pentru upgrade-uri mari.",1.99,"💎","","rare"],["3000 Shards","Rezerve masive pentru avansați.",4.99,"🔷","POPULAR","epic"],["5000 Shards","Pachetul suprem pentru supremație.",9.99,"🔷","","epic"],["10000 Shards","Pachetul maxim pentru cei dedicați.",14.99,"👑","BEST VALUE","legend"]];
 function spawnerSVG(c,badge){return `<svg class="pxchest" viewBox="0 0 16 16" width="80" height="80" shape-rendering="crispEdges"><rect width="16" height="16" fill="#14161f"/><rect width="16" height="1" fill="#3a3f55"/><rect y="15" width="16" height="1" fill="#3a3f55"/><rect width="1" height="16" fill="#3a3f55"/><rect x="15" width="1" height="16" fill="#3a3f55"/><rect x="2" y="2" width="12" height="12" fill="#07080d"/><rect x="5" y="5" width="6" height="6" fill="${c}"/><rect x="6" y="7" width="1" height="1" fill="#000"/><rect x="9" y="7" width="1" height="1" fill="#000"/><rect x="7" y="9" width="2" height="1" fill="#000"/><g fill="#6a7194" opacity=".85"><rect x="4" y="2" width="1" height="12"/><rect x="8" y="2" width="1" height="12"/><rect x="11" y="2" width="1" height="12"/><rect x="2" y="4" width="12" height="1"/><rect x="2" y="8" width="12" height="1"/><rect x="2" y="11" width="12" height="1"/></g><rect x="1" y="1" width="2" height="2" fill="#2a2f45"/><rect x="13" y="1" width="2" height="2" fill="#2a2f45"/><rect x="1" y="13" width="2" height="2" fill="#2a2f45"/><rect x="13" y="13" width="2" height="2" fill="#2a2f45"/></svg><span class="pxbadge">${badge}</span>`}
-const spawners=[["Spawner Gold","🪙 Aur constant pentru farm lung.",1.49,spawnerSVG("#ffd76a","🪙"),"rare",""],["Spawner Zombie","🧟 Zombi infinit: carne și XP.",0.99,spawnerSVG("#4a7a3a","🧟"),"common",""],["Spawner Skeleton","💀 Oase și săgeți automat.",0.99,spawnerSVG("#d8d8d8","💀"),"common",""],["Spawner Iron Golem","🗿 Fier la greu, fără efort.",1.99,spawnerSVG("#c9c2b5","🗿"),"rare",""],["Spawner Blaze","🔥 Blaze rods pentru poțiuni.",2.49,spawnerSVG("#ffb300","🔥"),"epic","POPULAR"],["Spawner Creeper","💥 Praf de pușcă pentru războaie.",2.99,spawnerSVG("#4fd34f","💥"),"epic",""]];
+const spawners=[["Spawner Blaze","🔥 Blaze rods pentru poțiuni.",0.25,spawnerSVG("#ffb300","🔥"),"epic","POPULAR"],["Spawner Creeper","💥 Praf de pușcă pentru războaie.",0.25,spawnerSVG("#4fd34f","💥"),"epic",""],["Spawner Iron Golem","🗿 Fier la greu, fără efort.",0.25,spawnerSVG("#c9c2b5","🗿"),"rare",""],["Spawner Zombie","🧟 Zombi infinit: carne și XP.",0.20,spawnerSVG("#4a7a3a","🧟"),"common",""],["Spawner Skeleton","💀 Oase și săgeți automat.",0.20,spawnerSVG("#d8d8d8","💀"),"common",""]];
 
 /* ===== UNBAN: cufăr pixel-art (SVG) ===== */
 function chestSVG(a,badge){return `<svg class="pxchest" viewBox="0 0 16 14" width="84" height="74" shape-rendering="crispEdges"><rect x="0" y="0" width="16" height="14" fill="#2b1a0a"/><rect x="1" y="1" width="14" height="5" fill="#9b6a34"/><rect x="1" y="6" width="14" height="7" fill="#7a4d22"/><rect x="1" y="5" width="14" height="1" fill="#2b1a0a"/><rect x="3" y="1" width="2" height="12" fill="${a}"/><rect x="11" y="1" width="2" height="12" fill="${a}"/><rect x="7" y="4" width="2" height="4" fill="#d9d9d9"/><rect x="7" y="5" width="2" height="2" fill="#555"/><rect x="2" y="2" width="1" height="1" fill="#c48a4a"/><rect x="13" y="8" width="1" height="1" fill="#5a3818"/></svg><span class="pxbadge">${badge}</span>`}
@@ -298,12 +314,28 @@ const unbans=[
  ["Unban Discord","💬 Revino pe serverul nostru de Discord alături de comunitate!","🔓 Unban Discord • 💙 Comunitate • 🔔 Anunțuri",2.49,chestSVG("#4d8dff","💬"),"rare",""]
 ];
 
+
+/* ===== RANKS ===== */
+const ranks=[
+ ["Rank Ice","🧊","rar-ice","❄️ 💎 ❄️",["🛒 10 Slot AH","📦 10 Slot Order","🏠 5 Home","🎁 /kit"],2.99,1.49],
+ ["Rank Winter","⛄","rar-winter","⛄ ✨ ⛄",["🛒 20 Slot AH","📦 20 Slot Order","🏠 10 Home","🎁 /kit"],4.99,2.49],
+ ["Rank Santa","🎅","rar-santa","🎅 🔥 🎅",["🛒 30 Slot AH","📦 30 Slot Order","🏠 15 Home","🎁 /kit"],9.99,4.99],
+ ["Rank Christmas","🎄","rar-xmas","🎄 👑 🎄",["🛒 50 Slot AH","📦 50 Slot Order","🏠 20 Home","🎁 /kit"],19.99,9.99]
+];
+function rankCard(r){
+ const [n,icon,cls,spark,perks,p30,p14]=r;
+ const opt=(d,p)=>`<div class="rank-opt"><span class="dur">(${d})</span><span class="pr">${p.toFixed(2)} euro</span><div class="btn-container"><button class="buy-btn" onclick="openCheckout('${n} (${d})',${p})">Cumpără</button><button class="cart-add-btn" onclick="addToCart('${n} (${d})',${p})">+ Coș</button></div></div>`;
+ return `<div class="item-card glass r ${cls}"><div class="halo"></div><div class="chest">${icon}</div><div class="rar-tag">RANK</div><div class="item-name">${n}</div>
+ <div class="sparkline">${spark}</div><ul class="perks">${perks.map(x=>`<li>${x}</li>`).join("")}</ul>${opt("30D",p30)}${opt("14D",p14)}</div>`;
+}
+const keys=[["Amethyst Key","🔮 Premii rare din crate-ul Amethyst.",1.99,"🔮","epic","POPULAR"],["Prime Key","⭐ Recompense premium din crate-ul Prime.",1.25,"⭐","rare",""],["Christmas Key","🎄 Surprize de sezon din crate-ul Christmas.",0.99,"🎄","rare",""],["Winter Key","❄️ Prada de iarnă din crate-ul Winter.",0.99,"❄️","rare",""],["Crimson Key","🩸 Premii intense din crate-ul Crimson.",0.99,"🩸","rare",""],["Gold Key","🪙 Premii de aur din crate-ul Gold.",0.49,"🪙","common",""],["Rank Key","🛡️ Poți câștiga un rank din crate-ul Rank.",0.99,"🛡️","epic",""]];
+
 const RAR={common:["COMMON","rar-common"],rare:["RARE","rar-rare"],epic:["EPIC","rar-epic"],legend:["LEGENDARY","rar-legend"]};
 function card(n,desc,drops,price,icon,rar,ribbon){
  const r=RAR[rar];
  return `<div class="item-card glass r ${r[1]}">${ribbon?`<div class="ribbon">${ribbon}</div>`:""}<div class="halo"></div>
  <div class="chest">${icon}</div><div class="rar-tag">${r[0]}</div><div class="item-name">${n}</div>
- <div class="item-desc">${desc}</div>${drops?`<div class="drops">${drops}</div>`:""}<div class="item-price">${price} euro</div>
+ <div class="item-desc">${desc}</div>${drops?`<div class="drops">${drops}</div>`:""}<div class="item-price">${Number(price).toFixed(2)} euro</div>
  <div class="btn-container"><button class="buy-btn" onclick="openCheckout('${n}',${price})">Cumpără</button><button class="cart-add-btn" onclick="addToCart('${n}',${price})">+ Coș</button></div></div>`;
 }
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -317,6 +349,8 @@ function toast(m){const t=document.getElementById('toast');t.innerText=m;t.class
  const med=["🥇","🥈","🥉","4.","5."];
  document.getElementById('topList').innerHTML=topBuyers.length?topBuyers.slice(0,5).map((t,i)=>`<div class="top-row"><span>${med[i]}</span><span class="nm">${esc(t.player)}</span><span class="amt">${t.total.toFixed(2)} €</span></div>`).join(""):`<div class="empty-note">Fii primul din top! 🏆</div>`;
  document.getElementById('recentList').innerHTML=recentPurchases.length?recentPurchases.slice(0,5).map(r=>`<div class="recent-item"><span><b>${esc(r.player)}</b> — ${esc(r.item)}</span><span>${esc(r.time)}</span></div>`).join(""):`<div class="empty-note">Nicio cumpărătură recentă.</div>`;
+ document.getElementById('ranksGrid').innerHTML=ranks.map(rankCard).join("");
+ document.getElementById('keysGrid').innerHTML=keys.map(k=>card(k[0],k[1],"",k[2],k[3],k[4],k[5])).join("");
  document.getElementById('shardsGrid').innerHTML=shards.map(s=>card(s[0],s[1],"",s[2],s[3],s[5],s[4])).join("");
   document.getElementById('spawnGrid').innerHTML=spawners.map(s=>card(s[0],s[1],"",s[2],s[3],s[4],s[5])).join("");
  document.getElementById('unbanGrid').innerHTML=unbans.map(u=>card(u[0],u[1],u[2],u[3],u[4],u[5],u[6])).join("");
@@ -427,7 +461,7 @@ function openCheckout(name,price){
  isCartCheckout=false;currentItemName=name;currentBasePrice=price;discountRate=0;
  modalTitleText.innerText="Finalizează Comanda";singleQtyContainer.style.display='block';modalQtyInput.value=1;
  promoCodeInput.value="";promoMessage.innerText="";
- modalDetails.innerHTML=`Produs: <b>${esc(name)}</b><br>Preț unitar: <b>${price} euro</b>`;
+ modalDetails.innerHTML=`Produs: <b>${esc(name)}</b><br>Preț unitar: <b>${Number(price).toFixed(2)} euro</b>`;
  updateSingleTotalPrice();checkoutModal.style.display='flex';
 }
 function openCheckoutTag(price){const t=customTagName.value.trim();if(!t){toast("Introdu textul pentru tag înainte de cumpărare!");return}openCheckout(`Tag Personalizat ("${t}")`,price)}
